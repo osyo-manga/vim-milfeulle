@@ -159,12 +159,10 @@ endfunction
 
 function! s:jumplist_compact()
 	call s:jumplist.filter("v:val.is_active()")
-	call s:debug_print()
 endfunction
 
 
 function! s:resize()
-	call s:jumplist_compact()
 	if s:jumplist.size() > g:milfeulle_history_size
 		if (s:jumplist.size()-1) <= s:jumplist.index
 			call s:jumplist.remove(0)
@@ -188,6 +186,7 @@ function! milfeulle#overlay(...)
 	if empty(jumper)
 		return
 	endif
+	call s:jumplist_compact()
 	if !s:jumplist.empty() && (s:jumplist.get().equal(jumper) || s:jumplist.get(s:jumplist.index-1).equal(jumper))
 		return
 	endif
@@ -197,6 +196,7 @@ function! milfeulle#overlay(...)
 		call s:jumplist.insert(jumper)
 	endif
 	call s:resize()
+	call s:debug_print()
 endfunction
 
 
