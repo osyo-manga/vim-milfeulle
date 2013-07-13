@@ -15,7 +15,7 @@ command! -bar MilfeulleNext    call milfeulle#next()
 command! -bar MilfeulleClear   call milfeulle#clear()
 
 
-let g:milfeulle_history_size = get(g:, "milfeulle_history_size", 100)
+let g:milfeulle_history_size = get(g:, "milfeulle_history_size", 50)
 let g:milfeulle_debug = get(g:, "milfeulle_debug", 0)
 
 
