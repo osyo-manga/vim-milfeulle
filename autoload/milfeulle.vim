@@ -185,6 +185,9 @@ function! milfeulle#overlay(...)
 		return milfeulle#overlay(s:make_jumper())
 	endif
 	let jumper = a:1
+	if empty(jumper)
+		return
+	endif
 	if !s:jumplist.empty() && (s:jumplist.get().equal(jumper) || s:jumplist.get(s:jumplist.index-1).equal(jumper))
 		return
 	endif

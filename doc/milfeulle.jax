@@ -135,7 +135,7 @@ milfeulle#jump([{index}])			*milfeulle#jump()*
 g:milfeulle_history_size			*g:milfeulle_history_size*
 	履歴のサイズです。
 Default: >
-	let g:milfeulle_history_size = 100
+	let g:milfeulle_history_size = 50
 <
 
 g:milfeulle_enable_CursorHold			*g:milfeulle_enable_CursorHold*
