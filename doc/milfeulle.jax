@@ -1,0 +1,152 @@
+*milfeulle.txt*		カーソル位置を保存しておき移動する為のプラグインです
+
+
+==============================================================================
+概要						*milfeulle-introduction*
+
+*milfeulle.vim* はカーソル位置の履歴を保存しておき、そのカーソル位置へと移動す
+る為のプラグインです。
+同等の機能として |jumplist| がありますが、|jumplist| とは違い、現在のウィンド
+ウでバッファを開くのではなくて、保存を行ったウィンドウの位置へとカーソルを移動
+させます。
+
+
+==============================================================================
+使い方						*milfeulle-usage*
+
+Example: >
+	nmap <C-o> <Plug>(milfeulle-prev)
+	nmap <C-i> <Plug>(milfeulle-next)
+<
+
+デフォルトでは以下のタイミングでカーソル位置が保存されます。
+
+- |CursorHold|
+- |InsertLeave|
+
+また、内部ではタブ番号、ウィンドウ番号を保持している為、その番号が変更された場
+合は正しくカーソルの移動が行われません。
+
+
+==============================================================================
+移動ロジック					*milfeulle-jumping*
+
+	カーソル位置の情報は現在の位置の前に追加されていきます。
+>
+	  0 tabpage: 2  winnr: 1  line:  10 bufnr: 6  name:main.vim
+	  1 tabpage: 3  winnr: 1  line:  27 bufnr: 8  name:milfeulle.vim
+	  2 tabpage: 5  winnr: 1  line: 193 bufnr: 4  name:milfeulle.vim
+	> 3 
+<
+	"> " は現在の位置を指します。
+	この時に |:MileullePrev| を行うと 2番目の位置へと移動し、
+>
+	  0 tabpage: 2  winnr: 1  line:  10 bufnr: 6  name:main.vim
+	  1 tabpage: 3  winnr: 1  line:  27 bufnr: 8  name:milfeulle.vim
+	> 2 tabpage: 5  winnr: 1  line: 193 bufnr: 4  name:milfeulle.vim
+	  3 
+<
+	のような状態になります。
+	この時に新しいカーソル位置の情報が追加された場合、
+
+ >
+ 	  0 tabpage: 2  winnr: 1  line:  10 bufnr: 6  name:main.vim
+ 	  1 tabpage: 3  winnr: 1  line:  27 bufnr: 8  name:milfeulle.vim
+ 	  2 tabpage: 2  winnr: 1  line:  14 bufnr: 6  name:main.vim
+	> 3 tabpage: 5  winnr: 1  line: 193 bufnr: 4  name:milfeulle.vim
+	  4 
+<
+	のように 2番目の位置に追加されます。
+	
+
+==============================================================================
+インターフェース				*milfeulle-interface*
+
+----------------------------------------------------------------------------
+コマンド					*milfeulle-commands*
+
+MilfeulleDisp					*:MilfeulleDisp*
+	ジャンプリストを表示します。
+Example:>
+	   0 tabpage: 2  winnr: 1  line:  10 bufnr: 6  name:main.vim
+	   1 tabpage: 2  winnr: 1  line:  14 bufnr: 6  name:main.vim
+	>  2 tabpage: 3  winnr: 1  line:  27 bufnr: 8  name:milfeulle.vim
+	   3 tabpage: 5  winnr: 1  line: 193 bufnr: 4  name:milfeulle.vim
+	   4 
+<
+	左側の "> " は現在の位置になります。
+	上記の状態で |:MilfeullePrev| を実行すると 1番目へ
+	|:MilfeulleNext| を実行すると 3番目へ移動します。
+
+MilfeulleOverlay				*:MilfeulleOverlay*
+	カーソル位置を記憶します。
+	2回連続して同じ位置は記憶しません。
+
+MilfeulleClear					*:MilfeulleClear*
+	履歴を削除します。
+
+MilfeullePrev					*:MilfeullePrev*
+	前のカーソル位置へ移動します。
+
+MilfeulleNext					*:MilfeulleNext*
+	次のカーソル位置へ移動します。
+
+
+------------------------------------------------------------------------------
+関数						*milfeulle-functions*
+
+milfeulle#jump([{index}])			*milfeulle#jump()*
+	{index} の位置へ移動します。
+	{index} は |:MilFeulleDisp| で左側に表示されている番号です。
+	{index} がない場合は現在選択されている位置に移動します。
+	移動に失敗した場合は、-1 が返ってきます。
+
+
+------------------------------------------------------------------------------
+キーマッピング					*milfeulle-key-mappings*
+
+<Plug>(milfeulle-prev)				*<Plug>(milfeulle-prev)*
+	前のカーソル位置へ移動します。
+
+<Plug>(milfeulle-next)				*<Plug>(milfeulle-next)*
+	次のカーソル位置へ移動します。
+
+<Plug>(milfeulle-overlay)			*<Plug>(milfeulle-overlay)*
+	カーソル位置を記憶します。
+	2回連続して同じ位置は記憶しません。
+
+<Plug>(milfeulle-clear)				*<Plug>(milfeulle-clear)*
+	履歴を削除します。
+
+
+==============================================================================
+設定						*milfeulle-setting*
+
+------------------------------------------------------------------------------
+変数						*milfeulle-variables*
+
+g:milfeulle_history_size			*g:milfeulle_history_size*
+	履歴のサイズです。
+Default: >
+	let g:milfeulle_history_size = 100
+<
+
+g:milfeulle_enable_CursorHold			*g:milfeulle_enable_CursorHold*
+	1 が設定されていれば |CursorHold| でカーソル位置を保存します。
+Default: >
+	let g:milfeulle_enable_CursorHold = 1
+<
+
+g:milfeulle_enable_InsertLeave			*g:milfeulle_enable_InsertLeave*
+	1 が設定されていれば |InsertLeave| でカーソル位置を保存します。
+Default: >
+	let g:milfeulle_enable_InsertLeave = 1
+<
+
+
+==============================================================================
+移動方法					*milfeulle-jumper*
+
+
+==============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
