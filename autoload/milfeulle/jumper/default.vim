@@ -13,7 +13,11 @@ function! s:make(pos, winnr, tabnr, bufnr)
 \	}
 
 	function! self.is_active()
-		return get(tabpagebuflist(self.tabnr), self.winnr-1, -1) == self.bufnr
+		let buflist = tabpagebuflist(self.tabnr)
+		if type(buflist) == type(0) && buflist == 0
+			return 0
+		endif
+		return get(buflist, self.winnr-1, -1) == self.bufnr
 	endfunction
 
 	function! self.jump()
