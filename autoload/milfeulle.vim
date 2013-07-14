@@ -100,15 +100,8 @@ function! milfeulle#make()
 endfunction
 
 
-function! milfeulle#clear()
-	call s:jumplist.clear()
-	call s:jumplist.push_back(milfeulle#jumper#dummy#make())
-	call s:debug_print()
-endfunction
-
-
 let s:jumplist = milfeulle#make()
-call milfeulle#clear()
+
 
 function! s:debug_print()
 	if !g:milfeulle_debug
@@ -117,6 +110,14 @@ function! s:debug_print()
 	let s = s:jumplist.to_string()
 	Clog! s
 endfunction
+
+
+function! milfeulle#clear()
+	call s:jumplist.clear()
+	call s:jumplist.push_back(milfeulle#jumper#dummy#make())
+	call s:debug_print()
+endfunction
+call milfeulle#clear()
 
 
 function! milfeulle#disp()
