@@ -136,7 +136,7 @@ function! milfeulle#prev()
 	endwhile
 
 	" 同じ位置ならもう1つ前へ飛ぶ
-	if s:jumplist.get().equal(now)
+	if !s:jumplist.is_index_top() && s:jumplist.get().equal(now)
 		return milfeulle#prev()
 	endif
 endfunction
@@ -150,7 +150,7 @@ function! milfeulle#next()
 	endwhile
 
 	" 同じ位置ならもう1つ次へ飛ぶ
-	if s:jumplist.get().equal(now)
+	if !s:jumplist.is_index_end() && s:jumplist.get().equal(now)
 		return milfeulle#next()
 	endif
 endfunction
