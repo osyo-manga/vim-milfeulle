@@ -129,6 +129,9 @@ endfunction
 
 
 function! milfeulle#prev()
+	if s:jumplist.is_index_top()
+		return
+	endif
 	let now = s:make_jumper()
 	let index = s:jumplist.index - 1
 	while milfeulle#jump(index) == -1
@@ -136,13 +139,16 @@ function! milfeulle#prev()
 	endwhile
 
 	" 同じ位置ならもう1つ前へ飛ぶ
-	if !s:jumplist.is_index_top() && s:jumplist.get().equal(now)
+	if s:jumplist.get().equal(now)
 		return milfeulle#prev()
 	endif
 endfunction
 
 
 function! milfeulle#next()
+	if s:jumplist.is_index_end()
+		return
+	endif
 	let now = s:make_jumper()
 	let index = s:jumplist.index + 1
 	while milfeulle#jump(index) == -1
@@ -150,7 +156,7 @@ function! milfeulle#next()
 	endwhile
 
 	" 同じ位置ならもう1つ次へ飛ぶ
-	if !s:jumplist.is_index_end() && s:jumplist.get().equal(now)
+	if s:jumplist.get().equal(now)
 		return milfeulle#next()
 	endif
 endfunction
