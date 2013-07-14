@@ -103,6 +103,7 @@ endfunction
 function! milfeulle#clear()
 	call s:jumplist.clear()
 	call s:jumplist.push_back(milfeulle#jumper#dummy#make())
+	call s:debug_print()
 endfunction
 
 
@@ -128,18 +129,30 @@ endfunction
 
 
 function! milfeulle#prev()
+	let now = s:make_jumper()
 	let index = s:jumplist.index - 1
 	while milfeulle#jump(index) == -1
 		let index -= 1
 	endwhile
+
+	" 同じ位置ならもう1つ前へ飛ぶ
+	if s:jumplist.get().equal(now)
+		return milfeulle#prev()
+	endif
 endfunction
 
 
 function! milfeulle#next()
+	let now = s:make_jumper()
 	let index = s:jumplist.index + 1
 	while milfeulle#jump(index) == -1
 		let index += 1
 	endwhile
+
+	" 同じ位置ならもう1つ次へ飛ぶ
+	if s:jumplist.get().equal(now)
+		return milfeulle#next()
+	endif
 endfunction
 
 
