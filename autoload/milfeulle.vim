@@ -207,7 +207,7 @@ function! milfeulle#overlay(...)
 		return
 	endif
 	call s:jumplist_compact()
-	if !s:jumplist.empty() && (s:jumplist.get().equal(jumper) || s:jumplist.get(s:jumplist.index-1).equal(jumper))
+	if !s:jumplist.empty() && (s:jumplist.get().equal(jumper) || (s:jumplist.index > 0 && s:jumplist.get(s:jumplist.index-1).equal(jumper)))
 		return
 	endif
 	if s:jumplist.is_index_end()
