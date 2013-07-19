@@ -177,7 +177,7 @@ function! milfeulle#jump(...)
 endfunction
 
 
-function! s:jumplist_compact()
+function! milfeulle#refresh()
 	call s:jumplist.filter("v:val.is_active()")
 endfunction
 
@@ -206,7 +206,6 @@ function! milfeulle#overlay(...)
 	if empty(jumper)
 		return
 	endif
-	call s:jumplist_compact()
 	if !s:jumplist.empty() && (s:jumplist.get().equal(jumper) || (s:jumplist.index > 0 && s:jumplist.get(s:jumplist.index-1).equal(jumper)))
 		return
 	endif

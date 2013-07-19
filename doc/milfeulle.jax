@@ -98,6 +98,9 @@ MilfeullePrev					*:MilfeullePrev*
 MilfeulleNext					*:MilfeulleNext*
 	次のカーソル位置へ移動します。
 
+MilfeulleRefresh				*:MilfeulleRefresh*
+	無効な移動先を削除します。
+
 
 ------------------------------------------------------------------------------
 関数						*milfeulle-functions*
@@ -126,6 +129,9 @@ milfeulle#overlay([{jumper}])			*milfeulle#overlay()*
 
 <Plug>(milfeulle-clear)				*<Plug>(milfeulle-clear)*
 	履歴を削除します。
+
+<Plug>(milfeulle-refresh)			*<Plug>(milfeulle-refresh)*
+	無効な移動先を削除します。
 
 
 ==============================================================================
@@ -156,7 +162,55 @@ Default: >
 ==============================================================================
 移動方法					*milfeulle-jumper*
 
+|milfeulle#overlay()| には移動方法を記述した辞書を渡すことで、その移動方法で位
+置を記録する事ができます。
 |milfeulle#overlay()| には以下の関数参照を保持した辞書を渡す事が出来ます。
+
+
+- "is_active()"
+	移動先が無効であれば 0 を返す。
+
+- "equal()"
+	他の jumper と比較して等価であれば 1 を返す。
+
+- "jump()"
+	カーソルの移動を行う。
+
+- "to_string"
+	自身の情報を文字列にして返す。
+
+
+Example: >
+	" カーソル位置を保持する jumper
+	function! MakeJumper()
+		let self = {
+	\		"type" : "position",
+	\		"pos" : getpos(".")
+	\	}
+	
+		function! self.is_active()
+			return self.pos[1] <= line("w$")
+		endfunction
+	
+		function! self.equal(rhs)
+			return self.type ==# get(a:rhs, "type", "")
+	\			&& self.pos[1] == a:rhs.pos[1]
+	\			&& self.pos[2] == a:rhs.pos[2]
+		endfunction
+	
+		function! self.jump()
+			call setpos(".", self.pos)
+		endfunction
+	
+		function! self.to_string()
+			return printf("lnum : %d  col : %d", self.pos[1], self.pos[2])
+		endfunction
+		return self
+	endfunction
+	
+	" 現在の位置を記録する
+	call milfeulle#overlay(MakeJumper())
+<
 
 
 ==============================================================================
