@@ -9,11 +9,22 @@ set cpo&vim
 
 
 command! -bar MilfeulleDisp    call milfeulle#disp()
-command! -bar MilfeulleOverlay call milfeulle#overlay()
 command! -bar MilfeullePrev    call milfeulle#prev()
 command! -bar MilfeulleNext    call milfeulle#next()
 command! -bar MilfeulleClear   call milfeulle#clear()
 command! -bar MilfeulleRefresh call milfeulle#refresh()
+
+
+let g:milfeulle_default_jumper_name
+\	= get(g:, "milfeulle_default_jumper_name", "win_tab_bufnr_pos")
+
+function! s:complete(arglead, ...)
+	return filter(milfeulle#jumper_list(), "v:val =~? '".a:arglead."'")
+endfunction
+
+command! -bar -nargs=? -complete=customlist,s:complete
+\	MilfeulleOverlay
+\	call milfeulle#overlay(milfeulle#jumper(<q-args>))
 
 
 let g:milfeulle_history_size = get(g:, "milfeulle_history_size", 50)

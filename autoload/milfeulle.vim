@@ -193,8 +193,19 @@ function! s:resize()
 endfunction
 
 
+function! milfeulle#jumper_list()
+	return filter(map(split(globpath(&rtp, "autoload/milfeulle/jumper/*.vim"), "\n"), "fnamemodify(v:val, ':t:r')"), "v:val !=# 'dummy'")
+endfunction
+
+
+function! milfeulle#jumper(name)
+	let name = empty(a:name) ? g:milfeulle_default_jumper_name : a:name
+	return milfeulle#jumper#{name}#make()
+endfunction
+
+
 function! s:make_jumper()
-	return milfeulle#jumper#default#make()
+	return milfeulle#jumper("")
 endfunction
 
 

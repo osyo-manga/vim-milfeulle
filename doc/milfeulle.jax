@@ -85,9 +85,12 @@ Example:>
 	上記の状態で |:MilfeullePrev| を実行すると 1番目へ
 	|:MilfeulleNext| を実行すると 3番目へ移動します。
 
-MilfeulleOverlay				*:MilfeulleOverlay*
+MilfeulleOverlay [{jumpername}]			*:MilfeulleOverlay*
 	カーソル位置を記憶します。
 	2回連続して同じ位置は記憶しません。
+	{jumpername} には |milfeulle-jumper-list| を渡すことができます。
+	{jumpername} がない場合は、|g:milfeulle_default_jumper_name| に設定さ
+	れている値が使用されます。
 
 MilfeulleClear					*:MilfeulleClear*
 	履歴を削除します。
@@ -113,6 +116,11 @@ milfeulle#jump([{index}])			*milfeulle#jump()*
 
 milfeulle#overlay([{jumper}])			*milfeulle#overlay()*
 	{jumper} を追加します。
+	{jumper} がない場合は |g:milfeulle_default_jumper_name| に設定されてい
+	る名前の |milfeulle-jumper| が使用されます。
+
+milfeulle#jumper_list()				*milfeulle#jumper_list()*
+	|milfeulle-jumper-list| の名前のリストを返します。
 
 ------------------------------------------------------------------------------
 キーマッピング					*milfeulle-key-mappings*
@@ -157,6 +165,9 @@ g:milfeulle_enable_InsertLeave			*g:milfeulle_enable_InsertLeave*
 Default: >
 	let g:milfeulle_enable_InsertLeave = 1
 <
+
+g:milfeulle_default_jumper_name			*milfeulle_default_jumper_name*
+	デフォルトで使用される |milfeulle-jumper-list| の名前です。
 
 
 ==============================================================================
@@ -211,6 +222,26 @@ Example: >
 	" 現在の位置を記録する
 	call milfeulle#overlay(MakeJumper())
 <
+
+------------------------------------------------------------------------------
+移動方法一覧					*milfeulle-jumper-list*
+
+移動方法はデフォルトでいくつか用意されています。
+
+"win_tab_bufnr_pos"				*milfeulle-jumper-win_tab_bufnr_pos*
+	以下のデータを使用します。
+	
+	"タブ番号"
+	"ウィンドウ番号"
+	"バッファ番号"
+	"カーソル位置"
+	
+	保持しているタブ番号、ウィンドウ番号、バッファ番号の組み合わせが無効で
+	あれば移動に失敗します。
+
+"position"					*milfeulle-jumper-position*
+	|getpos()| で取得した情報を使用します
+	タブ番号やウィンドウ番号は考慮しません。
 
 
 ==============================================================================
