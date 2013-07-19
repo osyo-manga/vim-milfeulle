@@ -239,6 +239,11 @@ Example: >
 	保持しているタブ番号、ウィンドウ番号、バッファ番号の組み合わせが無効で
 	あれば移動に失敗します。
 
+					*milfeulle-jumper-win_tab_bufnr_pos_line*
+"win_tab_bufnr_pos_line"
+	|milfeulle-jumper-win_tab_bufnr_pos| に加えて行の情報を保持します。
+	行が変更されていれば移動に失敗します。
+
 "position"					*milfeulle-jumper-position*
 	|getpos()| で取得した情報を使用します
 	タブ番号やウィンドウ番号は考慮しません。
