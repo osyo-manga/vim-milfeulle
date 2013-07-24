@@ -105,7 +105,12 @@ endfunction
 let s:base_jumplist = {}
 
 function! s:base_jumplist.get_default_jumper()
-	return self.default_jumper
+" 	return self.default_jumper
+	return g:milfeulle_default_jumper_name
+endfunction
+
+function! s:base_jumplist.get_capacity()
+	return g:milfeulle_history_size
 endfunction
 
 function! s:base_jumplist.jump(...)
@@ -158,7 +163,7 @@ function! s:base_jumplist.refresh()
 endfunction
 
 function! s:base_jumplist.resize()
-	if self.size() > self.capacity
+	if self.size() > self.get_capacity()
 		if (self.size()-1) <= self.index
 			call self.remove(0)
 		else
