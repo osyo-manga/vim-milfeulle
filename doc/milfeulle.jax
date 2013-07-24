@@ -15,7 +15,8 @@
 - 保存を行ったウィンドウの位置へカーソル位置が移動
 
 します。
-
+また、この挙動は |milfeulle-jumper| や |milfeulle-kind| で拡張・変更を行うこと
+が可能です。
 
 
 ==============================================================================
@@ -108,14 +109,17 @@ MilfeulleRefresh				*:MilfeulleRefresh*
 ------------------------------------------------------------------------------
 関数						*milfeulle-functions*
 
-milfeulle#jump([{index}])			*milfeulle#jump()*
-	{index} の位置へ移動します。
+milfeulle#jump([{kind}, {index}])		*milfeulle#jump()*
+	{kind} の {index} 位置へ移動します。
 	{index} は |:MilFeulleDisp| で左側に表示されている番号です。
-	{index} がない場合は現在選択されている位置に移動します。
+	{kind} がない場合は |g:milfeulle_default_kind| が使用されます。
+	{index} がない場合は現在選択されている位置
+	（|:MilFeulleDisp| で > を指している位置）に移動します。
 	移動に失敗した場合は、-1 が返ってきます。
 
-milfeulle#overlay([{jumper}])			*milfeulle#overlay()*
-	{jumper} を追加します。
+milfeulle#overlay({kind}, {jumper}])			*milfeulle#overlay()*
+	{jumper} を {kind} に追加します。
+	{kind} がない場合は |g:milfeulle_default_kind| が使用されます。
 	{jumper} がない場合は |g:milfeulle_default_jumper_name| に設定されてい
 	る名前の |milfeulle-jumper| が使用されます。
 
@@ -168,6 +172,15 @@ Default: >
 
 g:milfeulle_default_jumper_name			*milfeulle_default_jumper_name*
 	デフォルトで使用される |milfeulle-jumper-list| の名前です。
+Default: >
+	let g:milfeulle_default_jumper_name = "win_tab_bufnr_pos"
+<
+
+g:milfeulle_default_kind			*milfeulle_default_kind*
+	デフォルトで使用される |milfeulle-kind| の名前です。
+Default: >
+	let g:milfeulle_default_kind = "global"
+<
 
 
 ==============================================================================
@@ -247,6 +260,25 @@ Example: >
 "position"					*milfeulle-jumper-position*
 	|getpos()| で取得した情報を使用します
 	タブ番号やウィンドウ番号は考慮しません。
+
+==============================================================================
+ジャンプリストの保持				*milfeulle-kind*
+
+|milfeulle-jumper| の保持を行なっている分類です。
+いずれかの単位で |milfeulle-jumper| の保持を行うことができます。
+
+
+"global"					*milfeulle-kind-global*
+	Vim 全体で１つのオブジェクトです。
+
+"buffer"					*milfeulle-kind-buffer*
+	バッファ単位で保持を行います。
+
+"window"					*milfeulle-kind-window*
+	ウィンドウ単位で保持を行います。
+
+"tabpage"					*milfeulle-kind-tabpage*
+	タブページ単位で保持を行います。
 
 
 ==============================================================================

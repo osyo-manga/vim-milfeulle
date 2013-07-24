@@ -15,6 +15,10 @@ command! -bar MilfeulleClear   call milfeulle#clear()
 command! -bar MilfeulleRefresh call milfeulle#refresh()
 
 
+let g:milfeulle_default_kind
+\	= get(g:, "milfeulle_default_kind", "global")
+
+
 let g:milfeulle_default_jumper_name
 \	= get(g:, "milfeulle_default_jumper_name", "win_tab_bufnr_pos")
 
@@ -24,7 +28,7 @@ endfunction
 
 command! -bar -nargs=? -complete=customlist,s:complete
 \	MilfeulleOverlay
-\	call milfeulle#overlay(milfeulle#jumper(<q-args>))
+\	call milfeulle#overlay(g:milfeulle_default_kind, milfeulle#jumper(<q-args>))
 
 
 let g:milfeulle_history_size = get(g:, "milfeulle_history_size", 50)

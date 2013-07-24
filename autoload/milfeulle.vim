@@ -221,50 +221,90 @@ function! s:jumplist_global()
 	return s:jumplist
 endfunction
 
+
+function! s:jumplist_buffer(...)
+	let bufnr = bufnr("%")
+	let jumplist = getbufvar(bufnr, "milfeulle_jumplist", {})
+	if empty(jumplist)
+		let jumplist = milfeulle#make_jumplist(g:milfeulle_history_size, g:milfeulle_default_jumper_name)
+		call setbufvar(bufnr, "milfeulle_jumplist", jumplist)
+	endif
+	return jumplist
+endfunction
+
+
+function! s:jumplist_window(...)
+	let winnr = winnr()
+	let jumplist = getwinvar(winnr, "milfeulle_jumplist", {})
+	if empty(jumplist)
+		let jumplist = milfeulle#make_jumplist(g:milfeulle_history_size, g:milfeulle_default_jumper_name)
+		call setwinvar(winnr, "milfeulle_jumplist", jumplist)
+	endif
+	return jumplist
+endfunction
+
+
+function! s:jumplist_tabpage(...)
+	let tabpagenr = tabpagenr()
+	let jumplist = gettabvar(tabpagenr, "milfeulle_jumplist", {})
+	if empty(jumplist)
+		let jumplist = milfeulle#make_jumplist(g:milfeulle_history_size, g:milfeulle_default_jumper_name)
+		call settabvar(tabpagenr, "milfeulle_jumplist", jumplist)
+	endif
+	return jumplist
+endfunction
+
+
 function! s:get_jumplist(kind)
-	retur a:kind == "global" ? s:jumplist_global()
-\		: s:jumplist_global()
+	return s:jumplist_{a:kind}()
+endfunction
+
+function! milfeulle#clear(...)
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	return s:get_jumplist(kind).clear()
 endfunction
 
 
-
-
-function! milfeulle#clear()
-	return s:get_jumplist("global").clear()
+function! milfeulle#disp(...)
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	echo s:get_jumplist(kind).to_string()
 endfunction
 
 
-function! milfeulle#disp()
-	echo s:get_jumplist("global").to_string()
-endfunction
-
-function! milfeulle#debug()
-	return s:get_jumplist("global")
-endfunction
+" function! milfeulle#debug(...)
+" 	return s:get_jumplist()
+" endfunction
 
 
-function! milfeulle#prev()
-	return s:get_jumplist("global").prev_jump()
+function! milfeulle#prev(...)
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	return s:get_jumplist(kind).prev_jump()
 endfunction
 
 
-function! milfeulle#next()
-	return s:get_jumplist("global").next_jump()
+function! milfeulle#next(...)
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	return s:get_jumplist(kind).next_jump()
+endfunction
+
+
+function! milfeulle#refresh(...)
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	call s:get_jumplist(kind).refresh()
 endfunction
 
 
 function! milfeulle#jump(...)
-	return call("jump", a:000, s:get_jumplist("global"))
-endfunction
-
-
-function! milfeulle#refresh()
-	call s:get_jumplist("global").refresh()
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	let jumplist = s:get_jumplist(kind)
+	return call(jumplist.jump, a:000[1:], jumplist)
 endfunction
 
 
 function! milfeulle#overlay(...)
-	return call(s:get_jumplist("global").overlay, a:000, s:jumplist)
+	let kind = get(a:, 1, g:milfeulle_default_kind)
+	let jumplist = s:get_jumplist(kind)
+	return call(jumplist.overlay, a:000[1:], jumplist)
 endfunction
 
 
