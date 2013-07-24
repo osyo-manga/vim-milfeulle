@@ -159,7 +159,7 @@ endfunction
 
 function! s:base_jumplist.resize()
 	if self.size() > self.capacity
-		if (s:base_jumplist.size()-1) <= self.index
+		if (self.size()-1) <= self.index
 			call self.remove(0)
 		else
 			call self.remove(self.size()-1)
