@@ -14,7 +14,7 @@
 
 - 保存を行ったウィンドウの位置へカーソル位置が移動
 
-します。
+を行うことができます。
 また、この挙動は |milfeulle-jumper| や |milfeulle-kind| で拡張・変更を行うこと
 が可能です。
 
@@ -261,8 +261,15 @@ Example: >
 	|getpos()| で取得した情報を使用します
 	タブ番号やウィンドウ番号は考慮しません。
 
+"bufnr_pos"					*milfeulle-jumper-bufnr_pos*
+	バッファ番号と |getpos()| で取得した情報を使用します
+	移動する場合は保存したバッファ番号のバッファをそのウィンドウで開きま
+	す。
+	|milfeulle-kind-window| を使用する場合に有効です。
+
+
 ==============================================================================
-ジャンプリストの保持				*milfeulle-kind*
+jumper の保持方法				*milfeulle-kind*
 
 |milfeulle-jumper| の保持を行なっている分類です。
 いずれかの単位で |milfeulle-jumper| の保持を行うことができます。
@@ -279,6 +286,20 @@ Example: >
 
 "tabpage"					*milfeulle-kind-tabpage*
 	タブページ単位で保持を行います。
+
+
+==============================================================================
+設定例						*milfeulle-example*
+
+ウィンドウ単位で保存を行う
+
+Example: >
+	" 保持単位をウィンドウに
+	let g:milfeulle_default_kind = "window"
+
+	" バッファ番号と位置を保存する
+	let g:milfeulle_default_jumper_name = "bufnr_pos"
+<
 
 
 ==============================================================================
