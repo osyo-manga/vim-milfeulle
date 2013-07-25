@@ -276,16 +276,16 @@ jumper の保持方法				*milfeulle-kind*
 
 
 "global"					*milfeulle-kind-global*
-	Vim 全体で１つのオブジェクトです。
+	Vim 全体で１つのオブジェクトの保持します。
 
 "buffer"					*milfeulle-kind-buffer*
-	バッファ単位で保持を行います。
+	バッファ単位で保持します。
 
 "window"					*milfeulle-kind-window*
-	ウィンドウ単位で保持を行います。
+	ウィンドウ単位で保持します。
 
 "tabpage"					*milfeulle-kind-tabpage*
-	タブページ単位で保持を行います。
+	タブページ単位で保持します。
 
 
 ==============================================================================
@@ -298,6 +298,7 @@ Example: >
 	let g:milfeulle_default_kind = "window"
 
 	" バッファ番号と位置を保存する
+	" 別のバッファへ移動する場合、そのウィンドウでバッファを開く
 	let g:milfeulle_default_jumper_name = "bufnr_pos"
 <
 
