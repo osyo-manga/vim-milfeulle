@@ -136,6 +136,11 @@ function! s:base_jumplist.prev_jump()
 		let index -= 1
 	endwhile
 
+	" 範囲外までチェックしていたら終了
+	if index < 0
+		return
+	endif
+
 	" 同じ位置ならもう1つ前へ飛ぶ
 	if self.get().equal(now)
 		return self.prev_jump()
@@ -218,7 +223,7 @@ function! milfeulle#make_jumplist(capacity, default_jumper)
 endfunction
 
 
-
+unlet s:jumplist
 function! s:jumplist_global()
 	if !exists("s:jumplist")
 		let s:jumplist = milfeulle#make_jumplist(g:milfeulle_history_size, g:milfeulle_default_jumper_name)
