@@ -223,7 +223,8 @@ function! milfeulle#make_jumplist(capacity, default_jumper)
 endfunction
 
 
-unlet s:jumplist
+
+unlet! s:jumplist
 function! s:jumplist_global()
 	if !exists("s:jumplist")
 		let s:jumplist = milfeulle#make_jumplist(g:milfeulle_history_size, g:milfeulle_default_jumper_name)
